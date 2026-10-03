@@ -1,0 +1,24 @@
+package com.example.orderservice.controller;
+import com.example.orderservice.model.OrderRecord;
+import com.example.orderservice.service.OrderService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+@RestController
+@RequestMapping("/api/v1/orders")
+public class OrderController {
+    private final OrderService orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    @PostMapping
+    public ResponseEntity<OrderRecord> createOrder(@RequestBody OrderRecord request) {
+        OrderRecord response = orderService.createOrder(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderRecord> getOrderById(@PathVariable Long id) {
+        OrderRecord order = orderService.getOrderById(id);
+        return ResponseEntity.ok(order);
+    }
+}
